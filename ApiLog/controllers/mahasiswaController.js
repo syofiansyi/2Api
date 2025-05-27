@@ -34,14 +34,14 @@ exports.update = async (req, res) => {
     // 1. Panggil API eksternal
     const data = await api.put(`http://localhost:3000/api/mahasiswa/${req.params.id}`, req.body);
     
-    const { nama, nim } = req.body;
+    const { nama, nama_log } = req.body;
     const { id } = req.params;
 
 
     // 2. Simpan ke database lokal (log)
     db.query(
       'INSERT INTO log (nilai_awal, nilai_akhir, id) VALUES (?, ?, ?)',
-      [nama, nim, id],
+      [nama_log, nama, id],
       (err, result) => {
         if (err) {
           console.error('Gagal menyimpan ke log:', err);
