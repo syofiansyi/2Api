@@ -4,7 +4,7 @@ const db = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: '', // ganti sesuai password MySQL Anda
-  database: 'log_db'
+  database: 'mahasiswa_db'
 });
 
 db.connect(err => {

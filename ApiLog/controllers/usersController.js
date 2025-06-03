@@ -3,7 +3,7 @@ const db = require('../db');
 
 exports.getAll = async (req, res) => {
   try {
-    const data = await api.get('/mahasiswa');
+    const data = await api.get('/users');
     res.json(data);
   } catch (err) {
     console.error(err.message);
@@ -13,7 +13,7 @@ exports.getAll = async (req, res) => {
 
 exports.getById = async (req, res) => {
   try {
-    const data = await api.get(`/mahasiswa/${req.params.id}`);
+    const data = await api.get(`/users/${req.params.id}`);
     res.json(data);
   } catch (err) {
     res.status(404).json({ error: 'Data not found' });
@@ -22,7 +22,7 @@ exports.getById = async (req, res) => {
 
 exports.create = async (req, res) => {
   try {
-    const data = await api.post('/mahasiswa', req.body);
+    const data = await api.post('/users', req.body);
     res.status(201).json(data);
   } catch (err) {
     res.status(400).json({ error: 'Failed to create data' });
@@ -32,16 +32,16 @@ exports.create = async (req, res) => {
 exports.update = async (req, res) => {
   try {
     // 1. Panggil API eksternal
-    const data = await api.put(`http://localhost:3000/api/mahasiswa/${req.params.id}`, req.body);
+    const data = await api.put(`http://localhost:3000/api/users/${req.params.id}`, req.body);
     
-    const { nama, nama_log } = req.body;
+    const { name_log, name } = req.body;
     const { id } = req.params;
 
 
     // 2. Simpan ke database lokal (log)
     db.query(
       'INSERT INTO log (nilai_awal, nilai_akhir, id) VALUES (?, ?, ?)',
-      [nama_log, nama, id],
+      [name_log, name, id],
       (err, result) => {
         if (err) {
           console.error('Gagal menyimpan ke log:', err);
@@ -57,14 +57,14 @@ exports.update = async (req, res) => {
       }
     );
   } catch (err) {
-    console.error('Gagal update mahasiswa:', err.message);
-    res.status(400).json({ error: 'Gagal mengupdate data mahasiswa eksternal.', detail: err.message });
+    console.error('Gagal update users:', err.message);
+    res.status(400).json({ error: 'Gagal mengupdate data users eksternal.', detail: err.message });
   }
 };
 
 exports.remove = async (req, res) => {
   try {
-    await api.delete(`/mahasiswa/${req.params.id}`);
+    await api.delete(`/users/${req.params.id}`);
     res.status(204).send();
   } catch (err) {
     res.status(400).json({ error: 'Failed to delete data' });
