@@ -23,7 +23,7 @@ exports.create = (req, res) => {
   const { name, email, nip } = req.body;
   db.query('INSERT INTO users (name, email, nip) VALUES (?, ?, ?)', [name, email, nip], (err, result) => {
     if (err) return res.status(500).send(err);
-    res.status(201).json({ id: result.insertId, nama, nim, jurusan });
+    res.status(201).json({ id: result.insertId, name, email, nip });
   });
 };
 
